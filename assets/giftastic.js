@@ -1,10 +1,10 @@
 $(document).ready(function () {
     
 // var to hold gif array
-var movieArray = ["Star Wars", "Walk Hard", "The Godfather", "Ghost in the Shell", "Super Troopers"];
+var movieArray = ["Star Wars", "Walk Hard", "The Godfather", "Ghost in the Shell", "Super Troopers", "Donnie Darko", "Moonrise Kingdom"];
 
 // declare movieName var?
-debugger;
+
 // API key
 // var queryURL = 'https://api.giphy.com/v1/gifs/search?q= ' + movieName + ' &api_key=a5aJ7NgfPh9UcndR9VEthHQnDnNQwbrj&limit=10';
 
@@ -12,29 +12,33 @@ function renderButtons() {
     $('#buttons').empty();
     // loop to iterate through array and adds button
     for (i=0; i < movieArray.length; i++) {
+        // adds a + wherever a space is
+        var moviesPlus = movieArray[i].trim().replace(/ /g, "+"); 
         //button that adds movie array is
-        $('#buttons').append("<button type='button' data-movie=" + movieArray[i] + ">" + movieArray[i] + "</button>");
+        $('#buttons').append("<button type='button' id='movieButtons' data-movie=" + moviesPlus + " class='gif btn btn-primary'>" + movieArray[i] + "</button>");
     }   
 }
 
 renderButtons();
 
 // button for adding movie
-$("#addMovie").on("click", function () {
+$("#addMovie").on("click", function (event) {
+    // Prevent form from submitting
+    event.preventDefault();
     // take input, collect value, trim
-    var movie = $("#movieInput").val().trim();
+    var movieInput = $("#movieInput").val().trim();
     // push into OG array
-    movieArray.push(movie);
+    movieArray.push(movieInput);
     renderButtons();
-
 });
 
 // when you click the button then add gif to gifDisplay
-$('button').on('click', function(){
+$('#buttons').on('click',"button", function(){
     // declare movie and queryURL var
     var movie = $(this).attr('data-movie');
+    // insert movie name into queryURL
     var queryURL = 'https://api.giphy.com/v1/gifs/search?q=' + movie + '&api_key=a5aJ7NgfPh9UcndR9VEthHQnDnNQwbrj&limit=10';
-    // AJAX API request
+    // AJAX API request --- try making the ajax call a global var
     $.ajax({
         url: queryURL,
         type: 'GET'
@@ -53,6 +57,11 @@ $('button').on('click', function(){
         }
     })
 });
+
+// pausing solution from activities ---- 15-pausing-gifs
+$('.gif').on('click', function() {
+    //add data-still, data-animate and data-state = 'still' to gif buttons 
+})
 
 // document ready closing tag. dont fuck with
 });
@@ -103,3 +112,15 @@ function renderButtons() {
 //     });
 
 // event.preventDefault();
+
+// wes's still/animate code
+/* gif.attr("data-state", "still");
+gif.attr("data-animated", results[i].images.fixed_height.url);
+gif.attr("data-still", results[i].images.fixed_height_still.url);
+gif.attr("src", results[i].images.fixed_height_still.url); */
+
+/* var searchTerm = prompt('Add your search term here');
+searchTerm = searchTerm.trim().replace(/ /g, "+"); // adds a + wherever a space is
+request.open('GET', 'http://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=dc6zaTOxFJmzC'); */
+
+// var movieSpaces = movie.trim().replace(/ /g, "+");
